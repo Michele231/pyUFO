@@ -1,18 +1,25 @@
 import numpy as np
-from pyUFO import on_sphere
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 
+# call the library
+from pyUFO import on_sphere
 
+# circular
 #lat, lon = on_sphere(45, 0, 800, 180, 90, r_opt=240)
 
-# facny shape
+# fancy FOV shape
 xi = np.linspace(1, 360,360)
 r_opt = 150*(np.sin((xi*np.pi/180)*4))**2+150
-lat, lon = on_sphere(45, 0, 800, 90, 30, r_opt=r_opt, xi_opt = xi, shape='custom')
 
+# compute the lat lon coordinates of the FOV
+lat, lon = on_sphere(ssp_lat = 45, ssp_lon = 0, hsat = 800, 
+                    phi0 = 90, theta0 = 30, r_opt=r_opt, xi_opt = xi, shape='custom')
+
+
+# plot on map
 plt.rcParams.update({'font.size': 14})
 
 fig, ax = plt.subplots(1, figsize=(7,7),
