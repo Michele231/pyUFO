@@ -5,13 +5,11 @@
 ######################
 
 # 
-from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plt
 
 try: import numpy as np
 except ImportError as msg:  raise SystemExit (str(msg) + '\nimport numpy (numeric python) failed!')
 
-from optic import optics_shape
+from .optic import optics_shape
 
 def _sat2earth(x0,y0,z0,phi,theta):
     '''
@@ -85,11 +83,11 @@ def _x2latlon(xf,yf,zf,r_sphere):
     This
     '''
     
-    phif   = np.arccos(zf/r_sphere)
-    thetaf = np.sign(yf)*np.arccos(xf/np.sqrt(xf**2+yf**2))
+    thetaf = np.arccos(zf/r_sphere)
+    phif   = np.sign(yf)*np.arccos(xf/np.sqrt(xf**2+yf**2))
 
-    latf   = 90 - 180*phif/np.pi
-    lonf   = 180*thetaf/np.pi
+    latf   = 90 - 180*thetaf/np.pi
+    lonf   = 180*phif/np.pi
 
     return latf, lonf
 
@@ -101,14 +99,17 @@ def fov_on_sphere(ssp_lat, ssp_lon, hsat,
     This
     '''
 
+    phi0   = np.pi*phi0/180 
+    theta0 = np.pi*theta0/180
+
     # checks
     if (ssp_lat <= -90 or ssp_lat >= 90):
         raise SystemExit ('\nError: lat of the ssp has to be >-90 and <90')
     if (ssp_lon < -180 or ssp_lat > 180):
         raise SystemExit ('\nError: lon of the ssp has to be >=-180 and <=180')
 
-    np.asarray(phi0)
-    np.asarray(theta0)
+    #np.asarray(phi0)
+    #np.asarray(theta0)
 
     # computetation of x0, y0 and z0 (position of the satellite)
     lat_ang = np.pi/2 - np.pi*ssp_lat/180
@@ -136,42 +137,47 @@ def fov_on_sphere(ssp_lat, ssp_lon, hsat,
     # transformation to lat-lon coordinates 
     latf, lonf = _x2latlon(xf,yf,zf,r_sphere)
 
-
-
-    # just a figure
-    #fig = plt.figure()
-    # sphere
-    #u, v = np.mgrid[0:2*np.pi:30j, 0:np.pi:20j]
-    #x = r_sphere*np.cos(u)*np.sin(v)
-    #y = r_sphere*np.sin(u)*np.sin(v)
-    #z = r_sphere*np.cos(v)
-    #ax = fig.add_subplot(1,1,1, projection='3d')
-    #plot = ax.plot_surface(
-	#	x, y, z, rstride=1, cstride=1, cmap=plt.get_cmap('jet'),
-#		linewidth=0, antialiased=False, alpha=0.5)
-    # sat_point
-    #plot = ax.scatter(x0,y0,z0, marker='*')
-    # obs direction 1
-    #plot = ax.quiver(x0,y0,z0, 5*hsat*d_earth_view[0,0], 
-    #               5*hsat*d_earth_view[1,0], 5*hsat*d_earth_view[2,0])
-    # obs direction 2
-    #plot = ax.quiver(x0,y0,z0, 5*hsat*d_earth_view[0,1], 
-    #               5*hsat*d_earth_view[1,1], 5*hsat*d_earth_view[2,1])
-    #kkkk=0
-    # p1
-    #plot = ax.scatter(xf[kkkk],yf[kkkk],zf[kkkk], marker='.')
-
-
-    #plt.show()
-
     return latf, lonf
 
 ####################################################################################################################################
     
-if __name__ == "__main__":
+def on_sphere(ssp_lat, ssp_lon, hsat,
+              phi0, theta0, r_opt, xi_opt = 0, shape = "circular",
+              r_sphere = 6371):
 
-    a,b=optics_shape(1, 1, shape = "circular")
-    fov_on_sphere(-45,34,800,np.array([0,np.pi]),np.array([np.pi/3,np.pi/3]))
-    #fov_on_sphere(-89,-180,800,np.array([0,]),np.array([0,]))
-    #fov_on_sphere(-89,-180,800,np.array([0,]),np.array([0,]))
-    #fov_on_sphere(-89,-180,800,[0,2],[0,2])
+    '''
+    FOV projection on a sphere
+
+    INPUTS:
+            - ssp_lat  : latitude of the sub satellite point 
+            - ssp_lon  : longitude of the sub satellite point 
+            - hsat     : Height of the satellite (km)
+            - phi0     : central optical axis azimuth angle (with respect to N) (°)
+            - theta0   : central optical axis zenith angle (90 = nadir) (°)
+            - r_opt    : Opening radius of the optics (mrad) (np array)
+            - xi_opt   : Angle of the optics (°) (np array)
+            - shape    : Shape of the optics (circular or custom)
+            - r_sphere : Radius of the sphere (km)
+    OUTPUTS:
+            - latf     : np array containing the latitudes of the fov
+            - lonf     : np array containing the longitudes of the fov
+
+    '''
+
+
+    # checks
+    if (theta0 < 0 or theta0 > 90):
+        raise SystemExit ('\nError: theta0 of the sat has to be >=0 and <=90')
+    if (phi0 < -180 or phi0 > 180):
+        raise SystemExit ('\nError: phi0 of the sat has to be >=-180 and <=180')
+
+    phi, theta = optics_shape(phi0,theta0,shape,r_opt,xi_opt)
+    latf, lonf = fov_on_sphere(ssp_lat, ssp_lon, hsat, 
+                    phi, theta, r_sphere)
+
+    return latf, lonf
+
+####################################################################################################################################
+
+if __name__ == "__main__":
+    pass
