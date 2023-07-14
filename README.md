@@ -46,10 +46,8 @@ FOV shape             |  on_sphere()
 :-------------------------:|:-------------------------:
 Custom shape | theta0 = 45°
 ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/fov_geometry_custom.png)  |  ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/45d_obs_custom.png)
-:-------------------------:|:-------------------------:
 Circular shape | theta0 = 90° (Nadir)
 ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/fov_geometry.png)  |  ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/nadir_obs1.png)
-:-------------------------:|:-------------------------:
 Circular shape | theta0 = 30°
 ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/fov_geometry.png "Circular shape")  |  ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/30d_obs1.png "theta0 = 30°")
 
