@@ -8,7 +8,7 @@ project a general FOV shape on a sphere. Future versions will implement also the
 To install pyUFO library it is sufficient to clone this repository and run the setup script. 
 
 ```bash
-git clone 
+git clone https://github.com/Michele231/pyUFO.git
 cd pyUFO
 pip install .
 ```
@@ -31,7 +31,7 @@ pyUFO allows to use the function "on_sphere()" to create a projection on the sph
 ```python
 from pyUFO import on_sphere
 
-# fancy FOV shape
+# fancy FOV shape (in polar coordinates)
 xi = np.linspace(1, 360,360)
 r_opt = 150*(np.sin((xi*np.pi/180)*4))**2+150
 
@@ -44,7 +44,11 @@ lat, lon = on_sphere(ssp_lat = -45, ssp_lon = 0, hsat = 800,
 
 FOV shape             |  on_sphere()
 :-------------------------:|:-------------------------:
-![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/fov_geometry_custom.png "")  |  ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/45d_obs_custom.png "")
+![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/fov_geometry_custom.png "Custom shape")  |  ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/45d_obs_custom.png "theta0 = 45°")
+:-------------------------:|:-------------------------:
+![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/fov_geometry.png "Circular shape")  |  ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/nadir_obs1.png "theta0 = 90° (Nadir)")
+:-------------------------:|:-------------------------:
+![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/fov_geometry.png "Circular shape")  |  ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/30d_obs1.png "theta0 = 30°")
 
 
 ## Contributing
