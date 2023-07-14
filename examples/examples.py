@@ -15,8 +15,8 @@ xi = np.linspace(1, 360,360)
 r_opt = 150*(np.sin((xi*np.pi/180)*4))**2+150
 
 # compute the lat lon coordinates of the FOV
-lat, lon = on_sphere(ssp_lat = 45, ssp_lon = 0, hsat = 800, 
-                    phi0 = 90, theta0 = 30, r_opt=r_opt, xi_opt = xi, shape='custom')
+lat, lon = on_sphere(ssp_lat = -45, ssp_lon = 0, hsat = 800, 
+                    phi0 = 0, theta0 = 45, r_opt=r_opt, xi_opt = xi, shape='custom')
 
 
 # plot on map
@@ -25,7 +25,7 @@ plt.rcParams.update({'font.size': 14})
 fig, ax = plt.subplots(1, figsize=(7,7),
                       subplot_kw=dict(projection=ccrs.PlateCarree()))
 
-ax.set_extent([-50, 50, 0, 70.0])
+ax.set_extent([-50, 50, -70, 0.0])
 ax.coastlines(resolution='10m')
 ax.set_title("")
 
@@ -37,7 +37,7 @@ scatplot = ax.scatter(lon, lat, c='blue', s=1.5,
 
 # Sort out gridlines and their density
 xticks_extent = list(np.arange(-50, 50, 10))
-yticks_extent = list(np.arange(0, 70, 5))
+yticks_extent = list(np.arange(-70, 0, 5))
 
 gl = ax.gridlines(linewidths=0.1)
 gl.xlabels_top = False
