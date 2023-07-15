@@ -1,12 +1,11 @@
 ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/logo.png) 
 
 <p align="center">
-  <img title="v0.0.1" alt="v0.0.1" src="https://img.shields.io/badge/version-v4.5-informational?style=flat-square">
+  <img title="v0.0.1" alt="v0.0.1" src="https://img.shields.io/badge/version-v0.0.1-informational?style=flat-square">
   <img title="MIT License" alt="license" src="https://img.shields.io/badge/license-MIT-informational?style=flat-square">
 	<img title="python" alt="python3.9" src="https://img.shields.io/badge/python-3.9-informational?style=flat-square"><br/>
 	<img title="Code size" alt="code size" src="https://img.shields.io/github/languages/code-size/Michele231/pyUFO?color=red">
 	<img title="Repo size" alt="repo size" src="https://img.shields.io/github/repo-size/Michele231/pyUFO?color=red">
-	<img title="Lines of code" alt="total lines" src="https://img.shields.io/tokei/lines/github/Michele231/pyUFO?color=red"></br>
 </p>
 
 ***
