@@ -76,3 +76,6 @@ Pull requests are welcome. If you find any bug or error, please let me know!
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+Author: Michele Martinazzo, 
+Contribution from Ilenia Manco
