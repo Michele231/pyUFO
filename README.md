@@ -79,5 +79,4 @@ Pull requests are welcome. If you find any bug or error, please let me know!
 
 ***
 
-Authors: Michele Martinazzo, 
-contribution from Ilenia Manco
+Authors: Michele Martinazzo.
