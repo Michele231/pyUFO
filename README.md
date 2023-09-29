@@ -12,7 +12,7 @@
 
 # pyUFO
 
-pyUFO is a Python library specifically designed to assist with the management of satellite field of view (FOV) data. The current version of the library provides the ability to project a general FOV shape onto a sphere (using a specific function), returning the latitude and longitude of the FOV contour. Future versions will aim to expand its capabilities, allowing for the projection of FOV shapes onto ellipsoids and geoids. 
+pyUFO is a Python library specifically designed to assist with the management of satellite field of view (FOV) data. The current version of the library provides the ability to project a general FOV shape onto a sphere (analytically), returning the latitude and longitude of the FOV contour. Future versions will aim to expand its capabilities, allowing for the projection of FOV shapes onto ellipsoids and geoids. 
 
 ## Installation
 
