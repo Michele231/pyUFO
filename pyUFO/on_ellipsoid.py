@@ -14,7 +14,7 @@ from .optic import optics_shape
 def _sat2earth(x0,y0,z0,phi,theta):
     '''
     This function tranform the viewing direction from the
-    satellite basis to the Earth basis.
+    satellite basis (phi, theta) to the Earth basis (d_earth_view).
     '''
 
 
@@ -43,7 +43,8 @@ def _sat2earth(x0,y0,z0,phi,theta):
 
 def _find_intersection_with_x(d_earth_view, r_sphere, x0,y0,z0):
     '''
-    This
+    This function find the intersection between the viewing 
+    direction (d_earth_view) and the Earth surface.
     '''
     
     # Solving the line-sphere intersection
@@ -81,7 +82,7 @@ def _find_intersection_with_x(d_earth_view, r_sphere, x0,y0,z0):
 
 def _x2latlon(xf,yf,zf,r_sphere):
     '''
-    This
+    Returns the lat lon given the position on the ellipsoid
     '''
     
     thetaf = np.arccos(zf/r_sphere)
