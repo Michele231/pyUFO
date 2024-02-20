@@ -16,7 +16,7 @@ def _sat2earth(x0,y0,z0,phi,theta):
     This function tranform the viewing direction from the
     satellite basis to the Earth basis.
     '''
-
+    if (z0 == 0): z0 = z0 + 1e-9
 
     # satellite basis
     v0 = np.array([x0, y0, z0])                                # up
@@ -112,7 +112,7 @@ def fov_on_sphere(ssp_lat, ssp_lon, hsat,
     #np.asarray(phi0)
     #np.asarray(theta0)
 
-    # computetation of x0, y0 and z0 (position of the satellite)
+    # computation of x0, y0 and z0 (position of the satellite)
     lat_ang = np.pi/2 - np.pi*ssp_lat/180
     lon_ang = np.pi*ssp_lon/180
 
@@ -134,6 +134,7 @@ def fov_on_sphere(ssp_lat, ssp_lon, hsat,
 
     xf,yf,zf = x2,y2,z2
     xf[d2>d1],yf[d2>d1],zf[d2>d1] = x1[d2>d1],y1[d2>d1],z1[d2>d1]
+
 
     # transformation to lat-lon coordinates 
     latf, lonf = _x2latlon(xf,yf,zf,r_sphere)

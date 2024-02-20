@@ -16,7 +16,7 @@ def _sat2earth(x0,y0,z0,phi,theta):
     This function tranform the viewing direction from the
     satellite basis (phi, theta) to the Earth basis (d_earth_view).
     '''
-
+    if (z0 == 0): z0 = z0 + 1e-9
 
     # satellite basis
     v0 = np.array([x0, y0, z0])                                # up
@@ -41,7 +41,7 @@ def _sat2earth(x0,y0,z0,phi,theta):
 
 ####################################################################################################################################
 
-def _find_intersection_with_x(d_earth_view, r_sphere, x0,y0,z0):
+def _find_intersection_with_x(d_earth_view,major_ax,minor_ax,x0,y0,z0):
     '''
     This function find the intersection between the viewing 
     direction (d_earth_view) and the Earth surface.
@@ -58,9 +58,9 @@ def _find_intersection_with_x(d_earth_view, r_sphere, x0,y0,z0):
     k1 = (b/a)*x0-y0
     k2 = (c/a)*x0-z0
 
-    alph = 1 + (b/a)**2 + (c/a)**2
-    beta = -2.*(k1*b/a+k2*c/a)
-    gamm = k1**2+k2**2-r_sphere**2
+    alph = 1 + (b/a)**2 + ((major_ax/minor_ax)*(c/a))**2
+    beta = -2.*(k1*b/a+((major_ax/minor_ax)**2)*k2*c/a)
+    gamm = k1**2+((major_ax/minor_ax)*k2)**2-major_ax**2
 
     # find the real solutions
     Delt = (beta/alph)**2-4*(gamm/alph)
@@ -80,23 +80,46 @@ def _find_intersection_with_x(d_earth_view, r_sphere, x0,y0,z0):
 
 ####################################################################################################################################
 
-def _x2latlon(xf,yf,zf,r_sphere):
+def _x2latlon(xf,yf,zf,major_ax,minor_ax):
     '''
-    Returns the lat lon given the position on the ellipsoid
-    '''
-    
-    thetaf = np.arccos(zf/r_sphere)
-    phif   = np.sign(yf)*np.arccos(xf/np.sqrt(xf**2+yf**2))
+    Returns the lat lon given the position on the ellipsoid.
+    From ECEF to geodetic coordinates.
 
-    latf   = 90 - 180*thetaf/np.pi
-    lonf   = 180*phif/np.pi
+    Ferrari's solution following Heikkinen.
+    '''
+    major_ax = major_ax
+    minor_ax = minor_ax
+
+    # Eccentricity of the ellipsoid
+    e2     = 1-(minor_ax/major_ax)**2
+    e12    = (major_ax/minor_ax)**2-1
+    p      = np.sqrt(xf**2+yf**2)
+    F      = 54*(minor_ax*zf)**2
+    G      = p**2 + (1-e2)*zf**2 - (major_ax**2-minor_ax**2)*e2
+    c      = (F*(p*e2)**2)/(G**3)
+    s      = np.cbrt(1+c+np.sqrt(c**2+2*c))
+    k      = s+1+1/s
+    P      = F/(3*(k*G)**2)
+    Q      = np.sqrt(1+2*P*e2**2)
+    r01    = -(P*e2*p)/(1+Q)
+    r02a   = (1+1/Q)*0.5*major_ax**2
+    r02b   = -(P*(1-e2)*zf**2)/(Q*(Q+1))
+    r02c   = -0.5*P*p**2
+    r02    = np.sqrt(r02a+r02b+r02c)
+    r0     = r01+r02
+    U      = np.sqrt((p-e2*r0)**2+zf**2)
+    V      = np.sqrt((p-e2*r0)**2+(1-e2)*zf**2)
+    z0     = (zf*minor_ax**2)/(major_ax*V)
+    h      = U*(1-(minor_ax**2)/(major_ax*V))
+    latf   = 180*np.arctan((zf+e12*z0)/p)/np.pi
+    lonf   = 180*np.arctan2(yf,xf)/np.pi
 
     return latf, lonf
 
 ####################################################################################################################################
 
-def fov_on_sphere(ssp_lat, ssp_lon, hsat, 
-                    phi0, theta0, r_sphere = 6371):
+def fov_on_ellipsoid(ssp_lat, ssp_lon, hsat, 
+                    phi0, theta0, major_ax = 6378, minor_ax = 6357):
     '''
     This
     '''
@@ -113,21 +136,31 @@ def fov_on_sphere(ssp_lat, ssp_lon, hsat,
     #np.asarray(phi0)
     #np.asarray(theta0)
 
-    # computetation of x0, y0 and z0 (position of the satellite)
-    lat_ang = np.pi/2 - np.pi*ssp_lat/180
+    # computation of x0, y0 and z0 (position of the satellite)
+    # lat_ang = np.pi/2 - np.pi*ssp_lat/180
+    lat_ang = np.pi*ssp_lat/180
     lon_ang = np.pi*ssp_lon/180
 
-    R_tot   = hsat + r_sphere
-    x0      = R_tot*np.sin(lat_ang)*np.cos(lon_ang)
-    y0      = R_tot*np.sin(lat_ang)*np.sin(lon_ang)
-    z0      = R_tot*np.cos(lat_ang)
+    # Prime vertical radius of curvature N
+    denom   = np.sqrt((major_ax*np.cos(lat_ang))**2+(minor_ax*np.sin(lat_ang))**2)
+    N       = major_ax**2/denom 
+
+    # These coordinates are used just to compute the observation direction of the satellite
+    x00     = (N)*np.cos(lat_ang)*np.cos(lon_ang)
+    y00     = (N)*np.cos(lat_ang)*np.sin(lon_ang)
+    z00     = (N)*np.sin(lat_ang)
 
     # satellite view vector
-    d_earth_view = _sat2earth(x0,y0,z0,phi0,theta0)
+    d_earth_view = _sat2earth(x00,y00,z00,phi0,theta0)
 
-    # Solving the line-sphere intersection
-    x1,x2,y1,y2,z1,z2 = _find_intersection_with_x(d_earth_view, 
-                                            r_sphere,x0,y0,z0)
+    # Geodetic coordinates Transformation (from geodetic to ECEF)
+    x0      = (N+hsat)*np.cos(lat_ang)*np.cos(lon_ang)
+    y0      = (N+hsat)*np.cos(lat_ang)*np.sin(lon_ang)
+    z0      = (N*(minor_ax/major_ax)**2+hsat)*np.sin(lat_ang)
+
+    # Solving the line-ellipsoid intersection
+    x1,x2,y1,y2,z1,z2 = _find_intersection_with_x(d_earth_view,major_ax,
+                                            minor_ax,x0,y0,z0)
 
     # find the closest set of points to x0,y0,z0
     d1 = np.sqrt((x1-x0)**2+(y1-y0)**2+(z1-z0)**2)
@@ -137,15 +170,15 @@ def fov_on_sphere(ssp_lat, ssp_lon, hsat,
     xf[d2>d1],yf[d2>d1],zf[d2>d1] = x1[d2>d1],y1[d2>d1],z1[d2>d1]
 
     # transformation to lat-lon coordinates 
-    latf, lonf = _x2latlon(xf,yf,zf,r_sphere)
+    latf, lonf = _x2latlon(xf,yf,zf,major_ax,minor_ax)
 
     return latf, lonf
 
 ####################################################################################################################################
     
-def on_sphere(ssp_lat, ssp_lon, hsat,
+def on_ellipsoid(ssp_lat, ssp_lon, hsat,
               phi0, theta0, r_opt, xi_opt = 0, shape = "circular",
-              r_sphere = 6371):
+              major_ax = 6378.137, minor_ax = 6356.752):
 
     '''
     FOV projection on a sphere
@@ -159,7 +192,7 @@ def on_sphere(ssp_lat, ssp_lon, hsat,
             - r_opt    : Opening radius of the optics (mrad) (np array)
             - xi_opt   : Angle of the optics (°) (np array)
             - shape    : Shape of the optics (circular or custom)
-            - r_sphere : Radius of the sphere (km)
+            - r_sphere : 
     OUTPUTS:
             - latf     : np array containing the latitudes of the fov
             - lonf     : np array containing the longitudes of the fov
@@ -174,8 +207,8 @@ def on_sphere(ssp_lat, ssp_lon, hsat,
         raise SystemExit ('\nError: phi0 of the sat has to be >=-180 and <=180')
 
     phi, theta = optics_shape(phi0,theta0,shape,r_opt,xi_opt)
-    latf, lonf = fov_on_sphere(ssp_lat, ssp_lon, hsat, 
-                    phi, theta, r_sphere)
+    latf, lonf = fov_on_ellipsoid(ssp_lat, ssp_lon, hsat, 
+                    phi, theta, major_ax, minor_ax)
 
     return latf, lonf
 
