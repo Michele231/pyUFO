@@ -1,9 +1,9 @@
 ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/logo.png) 
 
 <p align="center">
-  <img title="v0.0.1" alt="v0.0.1" src="https://img.shields.io/badge/version-v0.0.1-informational?style=flat-square">
+  <img title="v0.0.1" alt="v0.1" src="https://img.shields.io/badge/version-v0.0.1-informational?style=flat-square">
   <img title="MIT License" alt="license" src="https://img.shields.io/badge/license-MIT-informational?style=flat-square">
-	<img title="python" alt="python3.9" src="https://img.shields.io/badge/python-3.9-informational?style=flat-square"><br/>
+	<img title="python" alt="python3.11" src="https://img.shields.io/badge/python-3.11-informational?style=flat-square"><br/>
 	<img title="Code size" alt="code size" src="https://img.shields.io/github/languages/code-size/Michele231/pyUFO?color=red">
 	<img title="Repo size" alt="repo size" src="https://img.shields.io/github/repo-size/Michele231/pyUFO?color=red">
 </p>
@@ -12,7 +12,7 @@
 
 # pyUFO
 
-pyUFO is a Python library specifically designed to assist with the management of satellite field of view (FOV) data. The current version of the library provides the ability to project a general FOV shape onto a sphere (analytically), returning the latitude and longitude of the FOV contour. Future versions will aim to expand its capabilities, allowing for the projection of FOV shapes onto ellipsoids and geoids. 
+pyUFO is a Python library specifically designed to assist with the management of satellite field of view (FOV). The current version of the library provides the ability to project a general FOV shape onto a sphere or onto a ellipsoid (analytically), returning the latitude and longitude of the FOV contour. 
 
 ## Installation
 
@@ -26,22 +26,44 @@ pip install .
 
 ## Usage
 
-pyUFO allows to use the function "on_sphere()" to create a projection on the sphere surface.
+Two functions are currently available in pyUFO: "on_sphere()" and "on_ellipsoid()".
 
-on_sphere() INPUTS:
-1. ssp_lat  : latitude of the sub satellite point 
-2. ssp_lon  : longitude of the sub satellite point 
-3. hsat     : Height of the satellite (km)
-4. phi0     : FOV central optical axis azimuth angle (with respect to N) (°)
-5. theta0   : FOV central optical axis zenith angle (90° = nadir) (°)
-6. r_opt    : Opening radius of the optics (mrad) (np array)
-7. xi_opt   : Angle of the optics (°) (np array)
-8. shape    : Shape of the optics (circular or custom)
-9. r_sphere : Radius of the sphere (km)
+### on_sphere()
 
-on_sphere() OUTPUTS:
-1. latf  : latitude of the FOV contour on the sphere
-2. lonf  : longitude of the FOV contour on the sphere
+INPUTS:
+1. ssp_lat  : Latitude of the sub-satellite point. 
+2. ssp_lon  : Longitude of the sub-satellite point.
+3. hsat     : Height of the satellite (km).
+4. phi0     : FOV central optical axis azimuth angle (with respect to N) (°).
+5. theta0   : FOV central optical axis zenith angle (90° = nadir) (°).
+6. r_opt    : Opening radius of the optics (mrad) (np array).
+7. xi_opt   : Angle of the optics (°) (np array).
+8. shape    : Shape of the optics (circular or custom).
+9. r_sphere : Radius of the sphere (km).
+
+OUTPUTS:
+1. latf  : latitude of the FOV contour on the sphere.
+2. lonf  : longitude of the FOV contour on the sphere.
+
+### on_ellipsoid()
+
+INPUTS:
+1. ssp_lat      : Latitude of the sub-satellite point. 
+2. ssp_lon      : Longitude of the sub-satellite point.
+3. hsat         : Height of the satellite (km).
+4. phi0         : FOV central optical axis azimuth angle (with respect to N) (°).
+5. theta0       : FOV central optical axis zenith angle (90° = nadir) (°).
+6. r_opt        : Opening radius of the optics (mrad) (np array).
+7. xi_opt       : Angle of the optics (°) (np array).
+8. shape        : Shape of the optics (circular or custom).
+9. semimajor_ax : Equatorial radius (semi-major axis) (km).
+10. semiminor_ax : Polar radius (semi-minor axis) (km).
+
+OUTPUTS:
+1. latf  : latitude of the FOV contour on the ellispoid.
+2. lonf  : longitude of the FOV contour on the ellispoid.
+
+Note that the 
 
 ### Example:
 
@@ -49,12 +71,12 @@ on_sphere() OUTPUTS:
 from pyUFO import on_sphere
 
 # fancy FOV shape (in polar coordinates)
-xi_opt = np.linspace(1, 360,360)
-r_opt = 150*(np.sin((xi*np.pi/180)*4))**2+150
+xi = np.linspace(1, 360,361)
+r  = 150*(np.sin((xi*np.pi/180)*4))**2+150 # mrad
 
 # compute the lat lon coordinates of the FOV
 lat, lon = on_sphere(ssp_lat = -45, ssp_lon = 0, hsat = 800, 
-                    phi0 = 0, theta0 = 45, r_opt=r_opt, xi_opt = xi_opt, shape='custom')
+                    phi0 = 0, theta0 = 45, r_opt = r, xi_opt = xi, shape='custom')
 ```
 
 ### Some Figures:
