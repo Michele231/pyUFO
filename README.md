@@ -33,9 +33,9 @@ Two functions are currently available in pyUFO: "on_sphere()" and "on_ellipsoid(
 INPUTS:
 1. ssp_lat  : Latitude of the sub-satellite point. 
 2. ssp_lon  : Longitude of the sub-satellite point.
-3. hsat     : Height of the satellite (km).
-4. phi0     : FOV central optical axis azimuth angle (with respect to N) (°).
-5. theta0   : FOV central optical axis zenith angle (90° = nadir) (°).
+3. hsat     : Height of the satellite perpendicular to the surface (km).
+4. phi0     : Observation direction (central optical axis) azimuth angle (counterclockwise with respect to N) (°).
+5. theta0   : Observation direction (central optical axis) zenith angle (90° = nadir) (°).
 6. r_opt    : Opening radius of the optics (mrad) (np array).
 7. xi_opt   : Angle of the optics (°) (np array).
 8. shape    : Shape of the optics (circular or custom).
@@ -50,9 +50,9 @@ OUTPUTS:
 INPUTS:
 1. ssp_lat      : Latitude of the sub-satellite point. 
 2. ssp_lon      : Longitude of the sub-satellite point.
-3. hsat         : Height of the satellite (km).
-4. phi0         : FOV central optical axis azimuth angle (with respect to N) (°).
-5. theta0       : FOV central optical axis zenith angle (90° = nadir) (°).
+3. hsat         : Height of the satellite perpendicular to the surface (km).
+4. phi0         : Observation direction (central optical axis) azimuth angle (counterclockwise with respect to N) (°).
+5. theta0       : Observation direction (central optical axis) zenith angle (90° = nadir) (°).
 6. r_opt        : Opening radius of the optics (mrad) (np array).
 7. xi_opt       : Angle of the optics (°) (np array).
 8. shape        : Shape of the optics (circular or custom).
@@ -63,7 +63,7 @@ OUTPUTS:
 1. latf  : latitude of the FOV contour on the ellispoid.
 2. lonf  : longitude of the FOV contour on the ellispoid.
 
-Note that the 
+Note that the conversion of ECEF coordinates to latitude involves a circular relationship, and it is solved iteratively using Ferrari's solution. This method may encounter numerical instability when the difference between the semi-major and semi-minor axes becomes significant. To circumvent this issue, it is recommended to maintain the relative difference between these axes below 15%. However the ECEF coordinates are always well determinated, and can be retrieved from the main function (xf,yf,zf).
 
 ### Example:
 
