@@ -30,40 +30,40 @@ Two functions are currently available in pyUFO: "on_sphere()" and "on_ellipsoid(
 
 ### on_sphere()
 
-INPUTS:
+**INPUTS**:
 1. ssp_lat  : Latitude of the sub-satellite point. 
 2. ssp_lon  : Longitude of the sub-satellite point.
 3. hsat     : Height of the satellite perpendicular to the surface (km).
 4. phi0     : Observation direction (central optical axis) azimuth angle (counterclockwise with respect to N) (°).
 5. theta0   : Observation direction (central optical axis) zenith angle (90° = nadir) (°).
-6. r_opt    : Opening radius of the optics (mrad) (np array).
-7. xi_opt   : Angle of the optics (°) (np array).
+6. r_opt    : Polar coordinate radius for the description of the optic shape (mrad) (np array).
+7. xi_opt   : Polar coordinate angle for the description of the optic shape (°) (np array).
 8. shape    : Shape of the optics (circular or custom).
 9. r_sphere : Radius of the sphere (km).
 
-OUTPUTS:
+**OUTPUTS**:
 1. latf  : latitude of the FOV contour on the sphere.
 2. lonf  : longitude of the FOV contour on the sphere.
 
 ### on_ellipsoid()
 
-INPUTS:
+**INPUTS**:
 1. ssp_lat      : Latitude of the sub-satellite point. 
 2. ssp_lon      : Longitude of the sub-satellite point.
 3. hsat         : Height of the satellite perpendicular to the surface (km).
 4. phi0         : Observation direction (central optical axis) azimuth angle (counterclockwise with respect to N) (°).
 5. theta0       : Observation direction (central optical axis) zenith angle (90° = nadir) (°).
-6. r_opt        : Opening radius of the optics (mrad) (np array).
-7. xi_opt       : Angle of the optics (°) (np array).
+6. r_opt        : Polar coordinate radius for the description of the optic shape (mrad) (np array).
+7. xi_opt       : Polar coordinate angle for the description of the optic shape (°) (np array).
 8. shape        : Shape of the optics (circular or custom).
 9. semimajor_ax : Equatorial radius (semi-major axis) (km).
 10. semiminor_ax : Polar radius (semi-minor axis) (km).
 
-OUTPUTS:
+**OUTPUTS**:
 1. latf  : latitude of the FOV contour on the ellispoid.
 2. lonf  : longitude of the FOV contour on the ellispoid.
 
-Note that the conversion of ECEF coordinates to latitude involves a circular relationship, and it is solved iteratively using Ferrari's solution. This method may encounter numerical instability when the difference between the semi-major and semi-minor axes becomes significant. To circumvent this issue, it is recommended to maintain the relative difference between these axes below 15%. However the ECEF coordinates are always well determinated, and can be retrieved from the main function (xf,yf,zf).
+Note that, for ellipsoids, the conversion of ECEF coordinates to latitude involves a circular relationship, and it is solved iteratively using Ferrari's solution. This method may encounter numerical instability when the difference between the semi-major and semi-minor axes becomes significant. To circumvent this issue, it is recommended to maintain the relative difference between these axes below 15%. However the ECEF coordinates are always well determinated, and can be retrieved from the main function (xf,yf,zf).
 
 ### Example:
 
@@ -85,10 +85,15 @@ FOV shape             |  on_sphere()
 :-------------------------:|:-------------------------:
 Custom shape | theta0 = 45°
 ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/fov_geometry_custom.png)  |  ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/45d_obs_custom.png)
-Circular shape | theta0 = 90° (Nadir)
-![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/fov_geometry.png)  |  ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/nadir_obs1.png)
 Circular shape | theta0 = 30°
 ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/fov_geometry.png "Circular shape")  |  ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/30d_obs1.png "theta0 = 30°")
+
+FOV shape             |  on_ellipsoid()
+:-------------------------:|:-------------------------:
+Gaussian Dispersion | theta0 = 45°
+![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/gaussian_dispersion.png)  |  ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/lat_vs_xi.png)
+
+
 
 
 ## Contributing
