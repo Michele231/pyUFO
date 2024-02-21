@@ -88,9 +88,9 @@ Custom shape | theta0 = 45°
 Circular shape | theta0 = 30°
 ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/fov_geometry.png "Circular shape")  |  ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/30d_obs1.png "theta0 = 30°")
 
-FOV shape             |  on_ellipsoid()
+Circular FOV          |  on_ellipsoid()
 :-------------------------:|:-------------------------:
-Gaussian Dispersion | theta0 = 45°
+Gaussian Dispersion | Latitude vs Polar coordinate angle xi_opt
 ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/gaussian_dispersion.png)  |  ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/lat_vs_xi.png)
 
 
