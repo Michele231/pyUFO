@@ -1,7 +1,7 @@
 ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/logo.png) 
 
 <p align="center">
-  <img title="v0.0.1" alt="v0.1" src="https://img.shields.io/badge/version-v0.0.1-informational?style=flat-square">
+  <img title="v0.1" alt="v0.1" src="https://img.shields.io/badge/version-v0.0.1-informational?style=flat-square">
   <img title="MIT License" alt="license" src="https://img.shields.io/badge/license-MIT-informational?style=flat-square">
 	<img title="python" alt="python3.11" src="https://img.shields.io/badge/python-3.11-informational?style=flat-square"><br/>
 	<img title="Code size" alt="code size" src="https://img.shields.io/github/languages/code-size/Michele231/pyUFO?color=red">
@@ -70,12 +70,16 @@ Note that, for ellipsoids, the conversion of ECEF coordinates to latitude involv
 ```python
 from pyUFO import on_sphere
 
-# fancy FOV shape (in polar coordinates)
+# fancy instrument optics shape (in polar coordinates)
 xi = np.linspace(1, 360,361)
 r  = 150*(np.sin((xi*np.pi/180)*4))**2+150 # mrad
 
-# compute the lat lon coordinates of the FOV
+# compute the lat lon coordinates of the FOV on the Earth sphere approximation
 lat, lon = on_sphere(ssp_lat = -45, ssp_lon = 0, hsat = 800, 
+                    phi0 = 0, theta0 = 45, r_opt = r, xi_opt = xi, shape='custom')
+
+# compute the lat lon coordinates of the FOV on the Earth IERS (2003) reference ellipsoid
+lat, lon = on_ellipsoid(ssp_lat = -45, ssp_lon = 0, hsat = 800, 
                     phi0 = 0, theta0 = 45, r_opt = r, xi_opt = xi, shape='custom')
 ```
 
