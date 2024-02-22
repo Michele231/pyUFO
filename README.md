@@ -31,8 +31,8 @@ Two functions are currently available in pyUFO: "on_sphere()" and "on_ellipsoid(
 ### on_sphere()
 
 **INPUTS**:
-1. ssp_lat  : Latitude of the sub-satellite point. 
-2. ssp_lon  : Longitude of the sub-satellite point.
+1. ssp_lat  : Latitude of the sub-satellite point (Geocentric coordinates). 
+2. ssp_lon  : Longitude of the sub-satellite point (Geocentric coordinates).
 3. hsat     : Height of the satellite perpendicular to the surface (km).
 4. phi0     : Observation direction (central optical axis) azimuth angle (counterclockwise with respect to N) (°).
 5. theta0   : Observation direction (central optical axis) zenith angle (90° = nadir) (°).
@@ -48,8 +48,8 @@ Two functions are currently available in pyUFO: "on_sphere()" and "on_ellipsoid(
 ### on_ellipsoid()
 
 **INPUTS**:
-1. ssp_lat      : Latitude of the sub-satellite point. 
-2. ssp_lon      : Longitude of the sub-satellite point.
+1. ssp_lat      : Latitude of the sub-satellite point (Geodetic coordinates). 
+2. ssp_lon      : Longitude of the sub-satellite point (Geodetic coordinates).
 3. hsat         : Height of the satellite perpendicular to the surface (km).
 4. phi0         : Observation direction (central optical axis) azimuth angle (counterclockwise with respect to N) (°).
 5. theta0       : Observation direction (central optical axis) zenith angle (90° = nadir) (°).
