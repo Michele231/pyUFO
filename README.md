@@ -68,7 +68,7 @@ Note that, for ellipsoids, the conversion of ECEF coordinates to latitude involv
 ### Example:
 
 ```python
-from pyUFO import on_sphere
+from pyUFO import on_sphere, on_ellipsoid
 
 # fancy instrument optics shape (in polar coordinates)
 xi = np.linspace(1, 360,361)
