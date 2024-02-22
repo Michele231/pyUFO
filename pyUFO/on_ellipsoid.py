@@ -192,7 +192,7 @@ def on_ellipsoid(ssp_lat, ssp_lon, hsat,
             - r_opt    : Opening radius of the optics (mrad) (np array)
             - xi_opt   : Angle of the optics (°) (np array)
             - shape    : Shape of the optics (circular or custom)
-            - r_sphere : 
+
     OUTPUTS:
             - latf     : np array containing the latitudes of the fov
             - lonf     : np array containing the longitudes of the fov
