@@ -26,17 +26,9 @@ ax.coastlines(resolution='10m')
 ax.set_title("")
 
 # Create a scatter plot
-#scatplot = ax.scatter(lons, lats, c='blue', s=1.5,
-#                      transform=ccrs.PlateCarree())
-#for r in rr:
-#	color      = (0.2, 0.5, 0.5,0.5*np.exp(-(r**2/(2*sigma**2))))
-#	late, lone = on_ellipsoid(ssp_lat = 35.0, ssp_lon = 15, hsat = 800, 
-#                    phi0 = 45, theta0 = 45, r_opt=r, xi_opt = xi, shape='custom',
-#                    semimajor_ax = 6378.137, semiminor_ax = 6356.752)
-#	scatplot   = ax.scatter(lone, late, c=color, s=1.5,
-#	                      transform=ccrs.PlateCarree())
+
 late, lone = on_ellipsoid(ssp_lat = 35.0, ssp_lon = 15, hsat = 800, 
-                phi0 = 45, theta0 = 45, r_opt=14, xi_opt = xi, shape='custom',
+                azimuth = 45, zenith = 45, r_opt=14, xi_opt = xi, shape='custom',
                 semimajor_ax = 6378.137, semiminor_ax = 6356.752)
 scatplot   = ax.scatter(lone, late, c=(0.1, 0.4, 0.4), s=1.5,
 	                      transform=ccrs.PlateCarree())
