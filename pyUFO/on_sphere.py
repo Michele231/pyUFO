@@ -144,7 +144,7 @@ def fov_on_sphere(ssp_lat, ssp_lon, hsat,
 ####################################################################################################################################
     
 def on_sphere(ssp_lat, ssp_lon, hsat,
-              phi0, theta0, r_opt, xi_opt = 0, shape = "circular",
+              azimuth, zenith, r_opt, xi_opt = 0, shape = "circular",
               r_sphere = 6371):
 
     '''
@@ -154,8 +154,8 @@ def on_sphere(ssp_lat, ssp_lon, hsat,
             - ssp_lat  : latitude of the sub satellite point 
             - ssp_lon  : longitude of the sub satellite point 
             - hsat     : Height of the satellite (km)
-            - phi0     : central optical axis azimuth angle (with respect to N) (°)
-            - theta0   : central optical axis zenith angle (90 = nadir) (°)
+            - azimuth  : central optical axis azimuth angle (with respect to N) (°)
+            - zenith   : central optical axis zenith angle (90 = nadir) (°)
             - r_opt    : Opening radius of the optics (mrad) (np array)
             - xi_opt   : Angle of the optics (°) (np array)
             - shape    : Shape of the optics (circular or custom)
@@ -168,12 +168,12 @@ def on_sphere(ssp_lat, ssp_lon, hsat,
 
 
     # checks
-    if (theta0 < 0 or theta0 > 90):
-        raise SystemExit ('\nError: theta0 of the sat has to be >=0 and <=90')
-    if (phi0 < -180 or phi0 > 180):
-        raise SystemExit ('\nError: phi0 of the sat has to be >=-180 and <=180')
+    if (zenith < 0 or zenith > 90):
+        raise SystemExit ('\nError: zenith has to be >=0 and <=90')
+    if (azimuth < -180 or azimuth > 180):
+        raise SystemExit ('\nError: azimuth has to be >=-180 and <=180')
 
-    phi, theta = optics_shape(phi0,theta0,shape,r_opt,xi_opt)
+    phi, theta = optics_shape(azimuth,zenith,shape,r_opt,xi_opt)
     latf, lonf = fov_on_sphere(ssp_lat, ssp_lon, hsat, 
                     phi, theta, r_sphere)
 
