@@ -16,12 +16,12 @@ r  = 50 #mrad
 
 # compute the lat lon coordinates of the FOV on a sphere
 lats, lons = on_sphere(ssp_lat = 0.0, ssp_lon = 0, hsat = 800, 
-                    phi0 = 0, theta0 = 33, r_opt=r, xi_opt = xi, shape='custom',
+                    azimuth = 0, zenith = 33, r_opt=r, xi_opt = xi, shape='custom',
                     r_sphere = 6371)
 
 # compute the lat lon coordinates of the FOV on an ellipsoid
 late, lone = on_ellipsoid(ssp_lat = 0.0, ssp_lon = 0, hsat = 800, 
-                    phi0 = 0, theta0 = 33, r_opt=r, xi_opt = xi, shape='custom',
+                    azimuth = 0, zenith = 33, r_opt=r, xi_opt = xi, shape='custom',
                     semimajor_ax = 6378.137, semiminor_ax = 6356.752)
 
 # plot on map
