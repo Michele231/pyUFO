@@ -34,8 +34,8 @@ Two functions are currently available in pyUFO: "on_sphere()" and "on_ellipsoid(
 1. ssp_lat  : Latitude of the sub-satellite point (Geocentric coordinates). 
 2. ssp_lon  : Longitude of the sub-satellite point (Geocentric coordinates).
 3. hsat     : Height of the satellite perpendicular to the surface (km).
-4. phi0     : Observation direction (central optical axis) azimuth angle (counterclockwise with respect to N) (°).
-5. theta0   : Observation direction (central optical axis) zenith angle (90° = nadir) (°).
+4. azimuth  : Observation direction (central optical axis) azimuth angle (counterclockwise with respect to N) (°).
+5. zenith   : Observation direction (central optical axis) zenith angle (90° = nadir) (°).
 6. r_opt    : Polar coordinate radius for the description of the optic shape (mrad) (np array).
 7. xi_opt   : Polar coordinate angle for the description of the optic shape (°) (np array).
 8. shape    : Shape of the optics (circular or custom).
@@ -51,8 +51,8 @@ Two functions are currently available in pyUFO: "on_sphere()" and "on_ellipsoid(
 1. ssp_lat      : Latitude of the sub-satellite point (Geodetic coordinates). 
 2. ssp_lon      : Longitude of the sub-satellite point (Geodetic coordinates).
 3. hsat         : Height of the satellite perpendicular to the surface (km).
-4. phi0         : Observation direction (central optical axis) azimuth angle (counterclockwise with respect to N) (°).
-5. theta0       : Observation direction (central optical axis) zenith angle (90° = nadir) (°).
+4. azimuth      : Observation direction (central optical axis) azimuth angle (counterclockwise with respect to N) (°).
+5. zenith       : Observation direction (central optical axis) zenith angle (90° = nadir) (°).
 6. r_opt        : Polar coordinate radius for the description of the optic shape (mrad) (np array).
 7. xi_opt       : Polar coordinate angle for the description of the optic shape (°) (np array).
 8. shape        : Shape of the optics (circular or custom).
@@ -76,20 +76,20 @@ r  = 150*(np.sin((xi*np.pi/180)*4))**2+150 # mrad
 
 # compute the lat lon coordinates of the FOV on the Earth sphere approximation
 lat, lon = on_sphere(ssp_lat = -45, ssp_lon = 0, hsat = 800, 
-                    phi0 = 0, theta0 = 45, r_opt = r, xi_opt = xi, shape='custom')
+                    azimuth = 0, zenith = 45, r_opt = r, xi_opt = xi, shape='custom')
 
 # compute the lat lon coordinates of the FOV on the Earth IERS (2003) reference ellipsoid
 lat, lon = on_ellipsoid(ssp_lat = -45, ssp_lon = 0, hsat = 800, 
-                    phi0 = 0, theta0 = 45, r_opt = r, xi_opt = xi, shape='custom')
+                    azimuth = 0, zenith = 45, r_opt = r, xi_opt = xi, shape='custom')
 ```
 
 ### Some Figures:
 
 FOV shape             |  on_sphere()
 :-------------------------:|:-------------------------:
-Custom shape | theta0 = 45°
+Custom shape | zenith = 45°
 ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/fov_geometry_custom.png)  |  ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/45d_obs_custom.png)
-Circular shape | theta0 = 30°
+Circular shape | zenith = 30°
 ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/fov_geometry.png "Circular shape")  |  ![alt text](https://github.com/Michele231/pyUFO/blob/main/figures/30d_obs1.png "theta0 = 30°")
 
 Circular FOV          |  on_ellipsoid()
